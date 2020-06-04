@@ -143,6 +143,7 @@ while running:
                     screen.fill((0, 0, 0))  
                     Background(BackgroundX, BackgroundY)
                     portal(portalX, portalY)
+                    portal(portalX2, portalY2)
                     player(playerX, playerY)
                     pygame.display.update()
 
