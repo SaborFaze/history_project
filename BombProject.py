@@ -4,6 +4,7 @@
 import pygame
 import time
 import math
+from pygame import mixer
 
 start_time = time.time()
 
@@ -13,7 +14,7 @@ JumpCount = 10
 
 # Intialize the pygame
 pygame.init()
-
+pygame.mixer.init()
 # Create the Screen
 screen = pygame.display.set_mode((800, 600))
 
@@ -25,6 +26,10 @@ screen.fill((255, 0, 0))
 pygame.display.set_caption("Bomb Project")
 icon = pygame.image.load('bird.png')
 pygame.display.set_icon(icon)
+
+# Sound Effects 
+pls_sound = pygame.mixer.Sound('PLSWORK.wav')
+pls_sound.play(loops=-1)
 
 # Players
 playerImg = pygame.image.load('worker.png')
@@ -45,6 +50,12 @@ portalX2 = 10000
 portalY2 = 10000
 
 
+GrassImg = pygame.image.load('grass.png')
+GrassX = 1100
+GrassY = 1100
+
+def Grass(x, y):
+    screen.blit(GrassImg, (x, y))
 
 def player(x, y):
     screen.blit(playerImg, (x, y))
@@ -73,13 +84,14 @@ def isCollision(portalX, portalY, playerX, playerY):
 
 
 
-
 Player_XCord = playerY
 
 # Game Loop
 running = True
 while running:
 
+    Yess = False
+    
     Player_XCord = playerY
 
     Running3 = True
@@ -116,8 +128,17 @@ while running:
                     current_time = time.time()
                     elapsed_time = current_time - start_time
 
-                    print(elapsed_time)
-                    print(Player_XCord)
+
+                    if playerX >= 180 and playerX <= 285 and playerY == 333 and GrassX == 200:
+                        Yess = True
+
+                    if (Yess):
+                        Running2 = False
+
+                    
+                        
+
+                    print(playerY)
 
                     if JumpCount >= -10:
                         neg = 1
@@ -138,21 +159,16 @@ while running:
                         playerY = Player_XCord
                         Running2 = False
                     
-
-
+                    
                     screen.fill((0, 0, 0))  
                     Background(BackgroundX, BackgroundY)
+                    Grass(GrassX, GrassY)
                     portal(portalX, portalY)
                     portal(portalX2, portalY2)
                     player(playerX, playerY)
                     pygame.display.update()
 
                     time.sleep(.001)
-
-                    if elapsed_time > seconds:
-                        print("Jump Loop Done")
-                        playerY = Player_XCord
-                        Running2 = False
 
 
 
@@ -178,6 +194,9 @@ while running:
                         portalX2 = 60
                         portalY2 = 480
 
+                        GrassX = 200
+                        GrassY = 350
+
                     if portalX2 == 60 and playerX > 0 and playerX < 100:
                         portalX2 = 1100
                         portalY2 = 1100
@@ -191,7 +210,15 @@ while running:
                         BackgroundX = 0
                         BackgroundY = 0
 
+                        GrassX = 1100
+                        GrassY = 1100
+
+                    if playerY == 357.5:
+                        if playerX > 285 or playerX < 180:
+                            playerY = 480
+
                     Background(BackgroundX, BackgroundY)
+                    Grass(GrassX, GrassY)
                     player(playerX, playerY)
                     portal(portalX, portalY)
                     portal2(portalX2, portalY2)
@@ -205,7 +232,6 @@ while running:
                 while pygame.event.poll().type != pygame.KEYUP:
                     pygame.time.wait(60)
                     playerX += 5
-                    Right_Running = True
 
                     # Place Everything Here in the While Loop
 
@@ -222,6 +248,9 @@ while running:
 
                         portalX2 = 60
                         portalY2 = 480
+
+                        GrassX = 200
+                        GrassY = 350 
                     
                     if portalX2 == 60 and playerX > 0 and playerX < 100:
                         portalX2 = 1100
@@ -236,12 +265,17 @@ while running:
                         BackgroundX = 0
                         BackgroundY = 0
 
-                    else:
-                        Right_Running = False
+                        GrassX = 1100
+                        GrassY = 1100
+                    
+                    if playerY == 357.5:
+                        if playerX > 285 or playerX < 180:
+                            playerY = 480
 
 
                     # Place Sprites Here
                     Background(BackgroundX, BackgroundY)
+                    Grass(GrassX, GrassY)
                     player(playerX, playerY)
                     portal(portalX, portalY)
                     portal2(portalX2, portalY2)
@@ -249,6 +283,10 @@ while running:
                     pygame.display.update()  
                     screen.fill((0, 0, 0))    
     # More collision - Portal2 and Player collision  
+    if playerY == 357.5:
+        if playerX > 285 or playerX < 180:
+            playerY = 480
+
     if portalX2 == 60 and playerX > 0 and playerX < 100:
         portalX2 = 1100
         portalY2 = 1100
@@ -261,7 +299,8 @@ while running:
 
         BackgroundX = 0
         BackgroundY = 0
-        
+
+    
     # Collision - Portal and Player collision
     collision = isCollision(portalX, portalY, playerX, playerY)
     if collision:
@@ -279,6 +318,8 @@ while running:
     
     # Place Sprites Here
     Background(BackgroundX, BackgroundY)
+
+    Grass(GrassX, GrassY)
 
     portal2(portalX2, portalY2)
 
